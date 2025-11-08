@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { Provider } from "~/components/ui/provider";
 import { Inter } from "next/font/google";
+import Script from "next/script";
 
 // const geistSans = Geist({
 //   variable: "--font-geist-sans",
@@ -48,11 +49,38 @@ export default function RootLayout({
 }>) {
   return (
     <html className={inter.variable} lang="en" suppressHydrationWarning>
+      <head>
+        <GoogleAnalytics />
+      </head>
       <body>
         <Provider defaultTheme="light" enableSystem={false}>
           {children}
         </Provider>
       </body>
     </html>
+  );
+}
+
+function GoogleAnalytics() {
+  const gaId = "310496417";
+  return (
+    <>
+      <Script
+        async
+        src={`https://www.googletagmanager.com/gtag/js? 
+        id=${gaId}`}
+      ></Script>
+      <Script
+        id="google-analytics"
+        dangerouslySetInnerHTML={{
+          __html: `
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', '${gaId}');
+          `,
+        }}
+      ></Script>
+    </>
   );
 }
