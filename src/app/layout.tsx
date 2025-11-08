@@ -62,7 +62,9 @@ export default function RootLayout({
 }
 
 function GoogleAnalytics() {
-  const gaId = "G-V2ZQ6LFET5";
+  const gaId = process.env.GOOGLE_ANALYTICS_ID;
+  if (!gaId) return null;
+
   return (
     <>
       <Script
