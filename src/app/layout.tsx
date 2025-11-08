@@ -62,7 +62,7 @@ export default function RootLayout({
 }
 
 function GoogleAnalytics() {
-  const gaId = "310496417";
+  const gaId = "G-V2ZQ6LFET5";
   return (
     <>
       <Script
