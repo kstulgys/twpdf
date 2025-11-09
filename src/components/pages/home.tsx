@@ -1257,6 +1257,8 @@ function FeedbackDialog() {
   const [body, setBody] = React.useState("");
   const [reason, setReason] = React.useState("Feedback");
 
+  const [isLoading, setIsLoading] = React.useState(false);
+
   // const createFeedback = useMutation(api.feedback.create);
   const closeBtnRef = React.useRef<HTMLButtonElement>(null);
 
@@ -1360,16 +1362,26 @@ function FeedbackDialog() {
                 </Field.Root>
               </Fieldset.Content>
               <Button
+                loading={isLoading}
                 type="submit"
                 alignSelf="flex-start"
                 onClick={async () => {
+                  if (!email.trim() || !body.trim() || !reason) {
+                    return;
+                  }
+                  setIsLoading(true);
                   console.log({ body, email, reason });
-                  await sendFeedback({ body, email, reason }).then(() => {
+                  try {
+                    await sendFeedback({ body, email, reason });
                     setEmail("");
                     setBody("");
                     setReason("Feedback");
                     closeBtnRef.current?.click();
-                  });
+                  } catch (e) {
+                    console.log(e);
+                  } finally {
+                    setIsLoading(false);
+                  }
                 }}
               >
                 Send message
