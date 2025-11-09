@@ -23,13 +23,15 @@ import {
   Dialog,
   Field,
   Fieldset,
-  Group,
-  NumberInput,
+  Textarea,
 } from "@chakra-ui/react";
 import Editor from "@monaco-editor/react";
 import { useStore } from "../../utils/store";
 import { usecase } from "../../utils/templates/templates";
 import Frame, { FrameContextConsumer } from "react-frame-component";
+import { sendFeedback } from "~/server";
+// import { useMutation } from "convex/react";
+// import { api } from "../../../convex/_generated/api";
 
 const LogoIcon = createIcon({
   viewBox: "0 0 40 40",
@@ -85,15 +87,22 @@ type PaperFormat =
 
 export function HomePage() {
   return (
-    <Box as="main" bg="#E5E5E5" minH="100vh" height="full" pb={20}>
+    <Box
+      as="main"
+      bg="#E5E5E5"
+      minH="100vh"
+      height="full"
+      pb={20}
+      // position="relative"
+    >
       {/* <SupportBanner /> */}
       <VStack
         as="header"
         bg="#065F46"
-        color="white"
         alignItems="center"
         gap={0}
         w="full"
+        color="bg"
       >
         <NavBar />
         <Box pt={[16, 24]}>
@@ -177,6 +186,7 @@ export function HomePage() {
         ></Box> */}
       </HStack>
       {/* <Footer /> */}
+      {/* <FeedbackForm /> */}
     </Box>
   );
 }
@@ -219,46 +229,46 @@ function EditableContent() {
   );
 }
 
-function Choice() {
-  const { onApiPropChange, apiProps } = useStore();
-  const { type } = apiProps;
+// function Choice() {
+//   const { onApiPropChange, apiProps } = useStore();
+//   const { type } = apiProps;
 
-  return (
-    <Group
-      //   attached
-      direction={["column", "row"]}
-      borderWidth="0.5px"
-      borderColor="#E2E8F0"
-      rounded="md"
-      p={1.5}
-    >
-      <Button
-        fontSize="md"
-        fontWeight="semibold"
-        px={4}
-        // leftIcon={<HiOutlineCode fontSize={20} />}
-        onClick={() => onApiPropChange("type", "doc")}
-        bg={type === "doc" || type === "image" ? "#D1FAE5" : "transparent"}
-        color={type === "doc" || type === "image" ? "#065F46" : "white"}
-        _hover={{}}
-      >
-        Create file from code
-      </Button>
-      <Button
-        fontSize="md"
-        fontWeight="semibold"
-        px={4}
-        // leftIcon={<HiOutlineGlobeAlt fontSize={20} />}
-        onClick={() => onApiPropChange("type", "web")}
-        bg={type === "web" ? "#D1FAE5" : "transparent"}
-        color={type === "web" ? "#065F46" : "white"}
-        _hover={{}}
-      >
-        Create file from website
-      </Button>
-    </Group>
-  );
-}
+//   return (
+//     <Group
+//       //   attached
+//       direction={["column", "row"]}
+//       borderWidth="0.5px"
+//       borderColor="#E2E8F0"
+//       rounded="md"
+//       p={1.5}
+//     >
+//       <Button
+//         fontSize="md"
+//         fontWeight="semibold"
+//         px={4}
+//         // leftIcon={<HiOutlineCode fontSize={20} />}
+//         onClick={() => onApiPropChange("type", "doc")}
+//         bg={type === "doc" || type === "image" ? "#D1FAE5" : "transparent"}
+//         color={type === "doc" || type === "image" ? "#065F46" : "white"}
+//         _hover={{}}
+//       >
+//         Create file from code
+//       </Button>
+//       <Button
+//         fontSize="md"
+//         fontWeight="semibold"
+//         px={4}
+//         // leftIcon={<HiOutlineGlobeAlt fontSize={20} />}
+//         onClick={() => onApiPropChange("type", "web")}
+//         bg={type === "web" ? "#D1FAE5" : "transparent"}
+//         color={type === "web" ? "#065F46" : "white"}
+//         _hover={{}}
+//       >
+//         Create file from website
+//       </Button>
+//     </Group>
+//   );
+// }
 
 function FileFromCodeTemplates() {
   const { apiProps, onChangeUsecase, usecase: selected } = useStore();
@@ -405,14 +415,17 @@ function NavBar() {
         <HStack
           flex={1}
           justifyContent={["center", "flex-start"]}
-          color="white"
+          // color="white"
         >
-          <LogoIcon size="2xl" mr="-1.5" />
+          <LogoIcon size="2xl" />
           <Text>tailwindpdf</Text>
         </HStack>
         <HStack flex={1} justifyContent="flex-end" gap={4}>
-          <Box display={["none", "block"]}>
+          <Box display={["none", "block"]} h={10}>
             <ProductHuntBanner />
+          </Box>
+          <Box>
+            <FeedbackDialog />
           </Box>
           {/* <Box>
             <Button
@@ -717,7 +730,7 @@ function DownloadModal() {
           <Button
             width="full"
             bg="#065F46"
-            color="white"
+            // color="white"
             fontSize="sm"
             _hover={{}}
             _active={{
@@ -822,24 +835,24 @@ function DownloadContent() {
     deviceScaleFactor,
   } = apiProps;
 
-  const isWebsite = type === "web";
-  const isPdf = type === "doc";
-  const isImage = type === "image";
+  // const isWebsite = type === "web";
+  // const isPdf = type === "doc";
+  // const isImage = type === "image";
 
-  React.useEffect(() => {
-    if (isWebsite) {
-      onApiPropChange("width", 1600);
-      onApiPropChange("height", 900);
-    } else {
-      onApiPropChange("output", "pdf");
-      onApiPropChange("width", 210);
-      onApiPropChange("height", 0);
-    }
-  }, [isWebsite]);
+  // React.useEffect(() => {
+  //   if (isWebsite) {
+  //     onApiPropChange("width", 1600);
+  //     onApiPropChange("height", 900);
+  //   } else {
+  //     onApiPropChange("output", "pdf");
+  //     onApiPropChange("width", 210);
+  //     onApiPropChange("height", 0);
+  //   }
+  // }, [isWebsite]);
 
   return (
     <Stack maxW={390} minW={["auto", 390]} width="full" p={2} gap={3}>
-      {!isWebsite && (
+      {/* {!isWebsite && (
         <Stack gap={0}>
           <Text pb={1} fontSize="sm" fontWeight="medium">
             Download type
@@ -870,9 +883,9 @@ function DownloadContent() {
             </HStack>
           </RadioGroup.Root>
         </Stack>
-      )}
+      )} */}
 
-      {isImage && (
+      {/* {isImage && (
         <Stack>
           <Stack gap={0}>
             <Text pt={3} pb={1} fontSize="sm" fontWeight="medium">
@@ -967,10 +980,10 @@ function DownloadContent() {
             </Field.Root>
           </Stack>
           {/* <Stack> */}
-          {/* <Text pt={3} pb={2} fontSize="sm" fontWeight="medium">
+      {/* <Text pt={3} pb={2} fontSize="sm" fontWeight="medium">
               Image resolution
             </Text> */}
-          {/* <Slider
+      {/* <Slider
               min={100}
               max={600}
               step={50}
@@ -991,61 +1004,59 @@ function DownloadContent() {
               </SliderTrack>
               <SliderThumb bg="#065F46" />
             </Slider> */}
-          {/* </Stack> */}
+      {/* </Stack> */}
+      {/* </Stack>
+      )} */}
+      <Stack>
+        <Stack gap={0}>
+          <Text pt={3} pb={1} fontSize="sm" fontWeight="medium">
+            Orientation
+          </Text>
+
+          <RadioGroup.Root
+            defaultValue={landscape ? "landscape" : "portrait"}
+            onValueChange={(value) => {
+              onApiPropChange(
+                "landscape",
+                value.value === "landscape" ? true : false
+              );
+            }}
+          >
+            <HStack gap={4}>
+              <RadioGroup.Item key="portrait" value="portrait">
+                <RadioGroup.ItemHiddenInput />
+                <RadioGroup.ItemIndicator />
+                <RadioGroup.ItemText>portrait</RadioGroup.ItemText>
+              </RadioGroup.Item>
+              <RadioGroup.Item key="landscape" value="landscape">
+                <RadioGroup.ItemHiddenInput />
+                <RadioGroup.ItemIndicator />
+                <RadioGroup.ItemText>landscape</RadioGroup.ItemText>
+              </RadioGroup.Item>
+            </HStack>
+          </RadioGroup.Root>
         </Stack>
-      )}
-      {isPdf && (
         <Stack>
-          <Stack gap={0}>
-            <Text pt={3} pb={1} fontSize="sm" fontWeight="medium">
-              Orientation
-            </Text>
-
-            <RadioGroup.Root
-              defaultValue={landscape ? "landscape" : "portrait"}
-              onValueChange={(value) => {
-                onApiPropChange(
-                  "landscape",
-                  value.value === "landscape" ? true : false
-                );
-              }}
+          <Text pt={4} pb={1} fontSize="sm" fontWeight="medium">
+            Paper size
+          </Text>
+          <NativeSelect.Root>
+            <NativeSelect.Field
+              defaultValue={format}
+              onChange={(e) => onApiPropChange("format", e.target.value)}
             >
-              <HStack gap={4}>
-                <RadioGroup.Item key="portrait" value="portrait">
-                  <RadioGroup.ItemHiddenInput />
-                  <RadioGroup.ItemIndicator />
-                  <RadioGroup.ItemText>portrait</RadioGroup.ItemText>
-                </RadioGroup.Item>
-                <RadioGroup.Item key="landscape" value="landscape">
-                  <RadioGroup.ItemHiddenInput />
-                  <RadioGroup.ItemIndicator />
-                  <RadioGroup.ItemText>landscape</RadioGroup.ItemText>
-                </RadioGroup.Item>
-              </HStack>
-            </RadioGroup.Root>
-          </Stack>
-          <Stack>
-            <Text pt={4} pb={1} fontSize="sm" fontWeight="medium">
-              Paper size
-            </Text>
-            <NativeSelect.Root>
-              <NativeSelect.Field
-                defaultValue={format}
-                onChange={(e) => onApiPropChange("format", e.target.value)}
-              >
-                {formats.map((format) => (
-                  <option key={format} value={format}>
-                    {format}
-                  </option>
-                ))}
-              </NativeSelect.Field>
-              <NativeSelect.Indicator />
-            </NativeSelect.Root>
-          </Stack>
+              {formats.map((format) => (
+                <option key={format} value={format}>
+                  {format}
+                </option>
+              ))}
+            </NativeSelect.Field>
+            <NativeSelect.Indicator />
+          </NativeSelect.Root>
         </Stack>
-      )}
+      </Stack>
 
-      {isWebsite && (
+      {/* {isWebsite && (
         <Stack gap={0}>
           <Stack gap={0}>
             <Text pb={1} fontSize="sm" fontWeight="medium">
@@ -1107,12 +1118,12 @@ function DownloadContent() {
             </Fieldset.Root>
           </HStack>
         </Stack>
-      )}
+      )} */}
       <Box pt={3}>
         <Button
           w="full"
           bg="#065F46"
-          color="white"
+          // color="white"
           fontSize="sm"
           _hover={{}}
           _active={{
@@ -1229,4 +1240,158 @@ function DownloadContent() {
 //     count = data?.count;
 //   } catch (e) {}
 //   return { props: { count } };
+// }
+
+// function FeedbackForm() {
+//   return (
+//     <Float placement="bottom-end" m={10}>
+//       <Circle size="5" bg="red" color="white">
+//         3
+//       </Circle>
+//     </Float>
+//   );
+// }
+
+function FeedbackDialog() {
+  const [email, setEmail] = React.useState("");
+  const [body, setBody] = React.useState("");
+  const [reason, setReason] = React.useState("Feedback");
+
+  // const createFeedback = useMutation(api.feedback.create);
+  const closeBtnRef = React.useRef<HTMLButtonElement>(null);
+
+  return (
+    <Dialog.Root size={{ mdDown: "full", md: "md" }}>
+      <Dialog.Trigger asChild>
+        <Button>Get in touch! 📬</Button>
+      </Dialog.Trigger>
+      <Dialog.Backdrop />
+      <Dialog.Positioner>
+        <Dialog.Content>
+          <Dialog.CloseTrigger asChild>
+            <Button variant="ghost" ref={closeBtnRef}>
+              Close
+            </Button>
+          </Dialog.CloseTrigger>
+          <Dialog.Header>
+            <Dialog.Title />
+          </Dialog.Header>
+          <Dialog.Body color="fg">
+            <Fieldset.Root size="lg" maxW="md" pt={4}>
+              <Stack>
+                <Fieldset.Legend>We’d love to hear from you</Fieldset.Legend>
+                <Fieldset.HelperText>
+                  Tell us what you need — feedback, feature requests, bugs, or
+                  API access.
+                </Fieldset.HelperText>
+              </Stack>
+
+              <Fieldset.Content gap={6}>
+                <Field.Root required>
+                  <Field.Label>Email address</Field.Label>
+                  <Input
+                    value={email}
+                    name="email"
+                    type="email"
+                    onChange={(e) => setEmail(e.target.value)}
+                  />
+                </Field.Root>
+
+                <Field.Root required>
+                  <Field.Label>What brings you here?</Field.Label>
+                  <RadioGroup.Root
+                    value={reason}
+                    onValueChange={(value) => {
+                      setReason(value.value!);
+                    }}
+                  >
+                    <Stack gap={4}>
+                      {[
+                        {
+                          title: "Feedback",
+                          helperText: "What do you like? What could be better?",
+                          value: "Feedback",
+                        },
+                        {
+                          title: "Feature requests",
+                          helperText:
+                            "What would you like us to build? Any examples?",
+                          value: "Feature requests",
+                        },
+                        {
+                          title: "Bugs",
+                          helperText:
+                            "What went wrong? Steps to reproduce + browser/OS",
+                          value: "Bugs",
+                        },
+                        {
+                          title: "API access/partnership",
+                          helperText:
+                            "How do you plan to use the API? Expected volume?",
+                          value: "API access/partnership",
+                        },
+                      ].map((item) => (
+                        <Stack gap={0}>
+                          <RadioGroup.Item key={item.title} value={item.value}>
+                            <RadioGroup.ItemHiddenInput />
+                            <RadioGroup.ItemIndicator />
+                            <RadioGroup.ItemText>
+                              {item.title}
+                            </RadioGroup.ItemText>
+                          </RadioGroup.Item>
+                          <Field.HelperText ml={8}>
+                            {item.helperText}
+                          </Field.HelperText>
+                        </Stack>
+                      ))}
+                    </Stack>
+                  </RadioGroup.Root>
+                </Field.Root>
+
+                <Field.Root required>
+                  <Field.Label>Message</Field.Label>
+                  <Textarea
+                    value={body}
+                    placeholder="Type your message here..."
+                    rows={8}
+                    name="message"
+                    onChange={(e) => setBody(e.target.value)}
+                  />
+                </Field.Root>
+              </Fieldset.Content>
+              <Button
+                type="submit"
+                alignSelf="flex-start"
+                onClick={async () => {
+                  console.log({ body, email, reason });
+                  await sendFeedback({ body, email, reason }).then(() => {
+                    setEmail("");
+                    setBody("");
+                    setReason("Feedback");
+                    closeBtnRef.current?.click();
+                  });
+                }}
+              >
+                Send message
+              </Button>
+            </Fieldset.Root>
+          </Dialog.Body>
+          <Dialog.Footer />
+        </Dialog.Content>
+      </Dialog.Positioner>
+    </Dialog.Root>
+  );
+}
+
+// async function postToTelegramBot(){
+//   const url="https://famous-cheetah-587.convex.site/telegram/webhook"
+//   const response = await fetch(url, {
+//     method: "POST",
+//     headers: {
+//       "Content-Type": "application/json",
+//     },
+//     body: JSON.stringify({
+//       message: "Hello from Convex",
+//     }),
+//   });
 // }

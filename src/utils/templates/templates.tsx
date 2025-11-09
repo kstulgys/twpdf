@@ -1,7 +1,7 @@
 import { createIcon } from "@chakra-ui/react";
 
 const infographic = `<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/fontawesome.min.css" />
-<div class="h-full w-[150mm] bg-[#FDFAF0] p-10 py-16">
+<div class="h-full bg-[#FDFAF0] p-10 py-16">
   <p class="text-center font-light">@reallygreatsite</p>
   <div class="flex justify-center pt-4">
     <p class="max-w-xs text-center text-3xl font-bold">The Pros and Cons of Renting A House</p>
@@ -25,7 +25,7 @@ const infographic = `<link rel="stylesheet" href="https://cdnjs.cloudflare.com/a
 </div>`;
 
 const poster = `
-<div class="h-[210mm] w-[210mm] bg-gray-100 p-24">
+<div class="bg-gray-100 p-24">
   <p class="w text-5xl font-semibold leading-tight text-gray-900">We cannot solve our problems with the same thinking we used when we created them.</p>
   <div class="mt-20 flex justify-between">
     <div>
@@ -39,7 +39,7 @@ const poster = `
 </div>`;
 
 const invoice = `
-<div class="h-[297mm] w-[210mm] p-12 pl-32">
+<div class="p-12 pl-32">
   <div class="flex justify-between">
     <div>
       <p class="pb-2 text-4xl">MB Road apples</p>
@@ -104,7 +104,7 @@ const invoice = `
 `;
 
 const resume = `
-<div class="h-[297mm] w-[210mm] p-12">
+<div class="p-12">
   <div class="flex">
     <div class="mt-16 grid w-[40%] border-2 border-gray-400 p-10">
       <div class="grid gap-8">

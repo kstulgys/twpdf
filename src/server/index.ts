@@ -20,4 +20,41 @@ export async function generatePdf(props: RequestBody) {
   return base64;
 }
 
-// u1SB@SMcz%2V2VivC85q
+const env = {
+  TELEGRAM_BOT_TOKEN: process.env.TELEGRAM_BOT_TOKEN!,
+  TW_PDF_BOT_CHAT_ID: process.env.TW_PDF_BOT_CHAT_ID!,
+};
+
+export async function sendFeedback({
+  body,
+  email,
+  reason,
+}: {
+  body: string;
+  email: string;
+  reason: string;
+}) {
+  await telegramApi("sendMessage", {
+    chat_id: env.TW_PDF_BOT_CHAT_ID,
+    text: JSON.stringify({ body, email, reason }, null, 2),
+  });
+}
+
+async function telegramApi<T>(
+  method: string,
+  body: Record<string, unknown>
+): Promise<T> {
+  const res = await fetch(
+    `https://api.telegram.org/bot${env.TELEGRAM_BOT_TOKEN}/${method}`,
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+    }
+  );
+  if (!res.ok) {
+    const text = await res.text();
+    throw new Error(`Telegram API ${method} failed: ${res.status} ${text}`);
+  }
+  return (await res.json()) as T;
+}

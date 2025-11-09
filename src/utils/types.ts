@@ -1,4 +1,9 @@
-import { PDFOptions, ScreenshotOptions, Viewport } from "puppeteer-core";
+import {
+  PaperFormat,
+  PDFOptions,
+  ScreenshotOptions,
+  Viewport,
+} from "puppeteer-core";
 
 export type HtmlToPdfRequest = {
   type: "html-to-pdf";
