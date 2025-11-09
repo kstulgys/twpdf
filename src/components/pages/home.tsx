@@ -1290,7 +1290,10 @@ function FeedbackDialog() {
 
               <Fieldset.Content gap={6}>
                 <Field.Root required>
-                  <Field.Label>Email address</Field.Label>
+                  <Field.Label>
+                    Email address
+                    <Field.RequiredIndicator />
+                  </Field.Label>
                   <Input
                     value={email}
                     name="email"
@@ -1300,7 +1303,10 @@ function FeedbackDialog() {
                 </Field.Root>
 
                 <Field.Root required>
-                  <Field.Label>What brings you here?</Field.Label>
+                  <Field.Label>
+                    What brings you here?
+                    <Field.RequiredIndicator />
+                  </Field.Label>
                   <RadioGroup.Root
                     value={reason}
                     onValueChange={(value) => {
@@ -1351,7 +1357,10 @@ function FeedbackDialog() {
                 </Field.Root>
 
                 <Field.Root required>
-                  <Field.Label>Message</Field.Label>
+                  <Field.Label>
+                    Message
+                    <Field.RequiredIndicator />
+                  </Field.Label>
                   <Textarea
                     value={body}
                     placeholder="Type your message here..."
