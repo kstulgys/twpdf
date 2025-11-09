@@ -1279,31 +1279,7 @@ function FeedbackDialog() {
             <Dialog.Title />
           </Dialog.Header>
           <Dialog.Body color="fg">
-            <Fieldset.Root
-              as="form"
-              size="lg"
-              maxW="md"
-              pt={4}
-              onSubmit={async (e) => {
-                e.preventDefault();
-                if (!email.trim() || !body.trim() || !reason) {
-                  return;
-                }
-                setIsLoading(true);
-                console.log({ body, email, reason });
-                try {
-                  await sendFeedback({ body, email, reason });
-                  setEmail("");
-                  setBody("");
-                  setReason("Feedback");
-                  closeBtnRef.current?.click();
-                } catch (e) {
-                  console.log(e);
-                } finally {
-                  setIsLoading(false);
-                }
-              }}
-            >
+            <Fieldset.Root size="lg" maxW="md" pt={4}>
               <Stack>
                 <Fieldset.Legend>We’d love to hear from you</Fieldset.Legend>
                 <Fieldset.HelperText>
@@ -1385,7 +1361,29 @@ function FeedbackDialog() {
                   />
                 </Field.Root>
               </Fieldset.Content>
-              <Button loading={isLoading} type="submit" alignSelf="flex-start">
+              <Button
+                loading={isLoading}
+                type="submit"
+                alignSelf="flex-start"
+                onClick={async (e) => {
+                  if (!email.trim() || !body.trim() || !reason) {
+                    return;
+                  }
+                  setIsLoading(true);
+                  console.log({ body, email, reason });
+                  try {
+                    await sendFeedback({ body, email, reason });
+                    setEmail("");
+                    setBody("");
+                    setReason("Feedback");
+                    closeBtnRef.current?.click();
+                  } catch (e) {
+                    console.log(e);
+                  } finally {
+                    setIsLoading(false);
+                  }
+                }}
+              >
                 Send message
               </Button>
             </Fieldset.Root>
