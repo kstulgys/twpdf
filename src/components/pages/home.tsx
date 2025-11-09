@@ -1280,6 +1280,7 @@ function FeedbackDialog() {
           </Dialog.Header>
           <Dialog.Body color="fg">
             <Fieldset.Root
+              as="form"
               size="lg"
               maxW="md"
               pt={4}
