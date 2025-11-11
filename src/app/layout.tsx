@@ -54,11 +54,11 @@ export default function RootLayout({
         <GoogleAnalytics />
       </head>
       <body>
-        {/* <ConvexClientProvider> */}
-        <Provider defaultTheme="light" enableSystem={false}>
-          {children}
-        </Provider>
-        {/* </ConvexClientProvider> */}
+        <ConvexClientProvider>
+          <Provider defaultTheme="light" enableSystem={false}>
+            {children}
+          </Provider>
+        </ConvexClientProvider>
       </body>
     </html>
   );

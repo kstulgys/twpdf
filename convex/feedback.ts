@@ -6,10 +6,10 @@ export const create = mutation({
   args: { body: v.string(), email: v.string(), reason: v.string() },
   handler: async (ctx, args) => {
     await ctx.db.insert("feedback", args);
-    await ctx.scheduler.runAfter(0, internal.telegram.sendMessage, {
-      body: args.body,
-      email: args.email,
-      reason: args.reason,
-    });
+    // await ctx.scheduler.runAfter(0, internal.telegram.sendMessage, {
+    //   body: args.body,
+    //   email: args.email,
+    //   reason: args.reason,
+    // });
   },
 });

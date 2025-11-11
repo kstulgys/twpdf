@@ -30,8 +30,8 @@ import { useStore } from "../../utils/store";
 import { usecase } from "../../utils/templates/templates";
 import Frame, { FrameContextConsumer } from "react-frame-component";
 import { sendFeedback } from "~/server";
-// import { useMutation } from "convex/react";
-// import { api } from "../../../convex/_generated/api";
+import { useMutation } from "convex/react";
+import { api } from "../../../convex/_generated/api";
 
 const LogoIcon = createIcon({
   viewBox: "0 0 40 40",
@@ -1259,7 +1259,7 @@ function FeedbackDialog() {
 
   const [isLoading, setIsLoading] = React.useState(false);
 
-  // const createFeedback = useMutation(api.feedback.create);
+  const createFeedback = useMutation(api.feedback.create);
   const closeBtnRef = React.useRef<HTMLButtonElement>(null);
 
   return (
@@ -1379,9 +1379,12 @@ function FeedbackDialog() {
                     return;
                   }
                   setIsLoading(true);
-                  console.log({ body, email, reason });
+                  const payload = { body, email, reason };
                   try {
-                    await sendFeedback({ body, email, reason });
+                    await Promise.allSettled([
+                      sendFeedback(payload),
+                      createFeedback(payload),
+                    ]);
                     setEmail("");
                     setBody("");
                     setReason("Feedback");
